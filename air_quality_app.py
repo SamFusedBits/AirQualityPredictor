@@ -77,7 +77,7 @@ def train_model(model, X_train, y_train):
     callbacks = [
         EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True),
         ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=1e-6),
-        ModelCheckpoint(filepath='best_air_quality_model.keras', monitor='val_loss', save_best_only=True, mode='min')
+        ModelCheckpoint(filepath='best_air_quality_model.h5', monitor='val_loss', save_best_only=True, mode='min')
     ]
 
     history = model.fit(
@@ -93,7 +93,7 @@ def evaluate_model(model, X_test, y_test):
 
 # Updated real-time prediction function
 def real_time_prediction(input_data, scaler, power_transformer):
-    model = keras.models.load_model('best_air_quality_model.keras')
+    model = keras.models.load_model('best_air_quality_model.h5')
 
     input_scaled = scaler.transform([input_data])  # Scale the input
     input_transformed = power_transformer.transform(input_scaled)  # Transform the input
@@ -176,12 +176,11 @@ def plot_barchart(predicted_value):
         ax.text(v + 5, i, str(v), color='black', va='center')
     
     # Adjust the position of the predicted NO2 level text, ensuring it stays within the plot
-    # Adjust the predicted NO2 level text position to be closer to the bar
     if predicted_value > 400:
         ax.text(predicted_value * 1.025, len(thresholds), f"{predicted_value:.2f}", 
                 color='maroon', va='center', fontweight='bold')
     else:
-        ax.text(predicted_value * 0.95, len(thresholds) - 1, f"{predicted_value:.2f}", 
+        ax.text(predicted_value * 1.025, len(thresholds), f"{predicted_value:.2f}", 
                 color='blue', va='center')
 
 
