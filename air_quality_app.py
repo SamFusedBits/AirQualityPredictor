@@ -77,7 +77,7 @@ def train_model(model, X_train, y_train):
     callbacks = [
         EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True),
         ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=1e-6),
-        ModelCheckpoint('best_air_quality_model.h5', save_best_only=True)
+        ModelCheckpoint(filepath='best_air_quality_model.h5', monitor='val_loss', save_best_only=True, mode='min')
     ]
 
     history = model.fit(
