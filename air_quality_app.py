@@ -77,7 +77,7 @@ def train_model(model, X_train, y_train):
     callbacks = [
         EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True),
         ReduceLROnPlateau(monitor='val_loss', factor=0.2, patience=5, min_lr=1e-6),
-        ModelCheckpoint(filepath='best_air_quality_model.h5', monitor='val_loss', save_best_only=True, mode='min')
+        ModelCheckpoint(filepath='best_air_quality_model.keras', monitor='val_loss', save_best_only=True, mode='min')
     ]
 
     history = model.fit(
@@ -93,7 +93,7 @@ def evaluate_model(model, X_test, y_test):
 
 # Updated real-time prediction function
 def real_time_prediction(input_data, scaler, power_transformer):
-    model = keras.models.load_model('best_air_quality_model.h5')
+    model = keras.models.load_model('best_air_quality_model.keras')
 
     input_scaled = scaler.transform([input_data])  # Scale the input
     input_transformed = power_transformer.transform(input_scaled)  # Transform the input
